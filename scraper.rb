@@ -24,21 +24,21 @@ bounding_box =
   "(#{lat_min},#{lng_min},#{lat_max},#{lng_max})"
 
 # Slightly easier to handle if we split out into two queries
-doc = overpass_query("node['tourism'='camp_site']#{bounding_box};out;")
-doc.search('node').each do |node|
-  record = {
-    'osm_node_id' => node['id'],
-    'latitude' => node['lat'],
-    'longitude' => node['lon']
-  }
-  # Step through all the tags
-  node.search('tag').each do |tag|
-    key = tag['k'].tr(':', '_')
-    value = tag['v']
-    record[key] = value
-  end
-  ScraperWiki.save_sqlite(['osm_node_id'], record)
-end
+# doc = overpass_query("node['tourism'='camp_site']#{bounding_box};out;")
+# doc.search('node').each do |node|
+#   record = {
+#     'osm_node_id' => node['id'],
+#     'latitude' => node['lat'],
+#     'longitude' => node['lon']
+#   }
+#   # Step through all the tags
+#   node.search('tag').each do |tag|
+#     key = tag['k'].tr(':', '_')
+#     value = tag['v']
+#     record[key] = value
+#   end
+#   ScraperWiki.save_sqlite(['osm_node_id'], record)
+# end
 
 doc = overpass_query("way['tourism'='camp_site']#{bounding_box};out center;")
 doc.search('way').each do |way|
