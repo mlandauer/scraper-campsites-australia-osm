@@ -33,7 +33,7 @@ bounding_box =
 #   }
 #   # Step through all the tags
 #   node.search('tag').each do |tag|
-#     key = tag['k'].tr(':', '_')
+#     key = tag['k'].tr(':', '_').tr('.', '_')
 #     value = tag['v']
 #     record[key] = value
 #   end
@@ -49,7 +49,7 @@ doc.search('way').each do |way|
   }
   # Step through all the tags
   way.search('tag').each do |tag|
-    key = tag['k'].tr(':', '_')
+    key = tag['k'].tr(':', '_').tr('.', '_')
     value = tag['v']
     record[key] = value
   end
