@@ -5,9 +5,10 @@ require 'scraperwiki'
 require 'mechanize'
 
 def overpass_query(query)
-  Mechanize.new.get(
+  r = Mechanize.new.get(
     'https://overpass-api.de/api/interpreter?data=' + CGI.escape(query)
-  ).body
+  )
+  Nokogiri::XML(r.body)
 end
 
 # Example overpass API query that gets campsites within a part of Sydney
@@ -23,20 +24,23 @@ bounding_box =
   "(#{lat_min},#{lng_min},#{lat_max},#{lng_max})"
 
 # Slightly easier to handle if we split out into two queries
-puts overpass_query("node['tourism'='camp_site']#{bounding_box};out;")
-puts overpass_query("way['tourism'='camp_site']#{bounding_box};out center;")
+doc = overpass_query("node['tourism'='camp_site']#{bounding_box};out;")
+doc.search('node').each do |node|
+  record = {
+    'osm_node_id' => node['id'],
+    'latitude' => node['lat'],
+    'longitude' => node['lon']
+  }
+  # Step through all the tags
+  node.search('tag').each do |tag|
+    key = tag['k'].tr(':', '_')
+    value = tag['v']
+    record[key] = value
+  end
+  ScraperWiki.save_sqlite(['osm_node_id'], record)
+end
 
-# # Find somehing on the page using css selectors
-# p page.at('div.content')
-#
+#puts overpass_query("way['tourism'='camp_site']#{bounding_box};out center;")
+
 # # Write out to the sqlite database using scraperwiki library
 # ScraperWiki.save_sqlite(["name"], {"name" => "susan", "occupation" => "software developer"})
-#
-# # An arbitrary query against the database
-# ScraperWiki.select("* from data where 'name'='peter'")
-
-# You don't have to do things with the Mechanize or ScraperWiki libraries.
-# You can use whatever gems you want: https://morph.io/documentation/ruby
-# All that matters is that your final data is written to an SQLite database
-# called "data.sqlite" in the current working directory which has at least a table
-# called "data".
