@@ -21,12 +21,10 @@ lng_max = 151.44172668457
 
 bounding_box =
   "(#{lat_min},#{lng_min},#{lat_max},#{lng_max})"
-data = 'node["tourism"="camp_site"]' +
-       bounding_box +
-       ';out;way["tourism"="camp_site"]' +
-       bounding_box +
-       ';(._;>;);out center;'
-puts overpass_query(data)
+
+# Slightly easier to handle if we split out into two queries
+puts overpass_query("node['tourism'='camp_site']#{bounding_box};out;")
+puts overpass_query("way['tourism'='camp_site']#{bounding_box};out center;")
 
 # # Find somehing on the page using css selectors
 # p page.at('div.content')
