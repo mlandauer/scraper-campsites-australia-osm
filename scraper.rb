@@ -9,12 +9,19 @@ agent = Mechanize.new
 # Example overpass API query that gets campsites within a part of Sydney
 # from OpenStreetMap
 
-bounding_box ='(-34.011688599109,150.96038818359,-33.652923027488,151.44172668457)'
+# Defines the bounding box of the search
+lat_min = -34.011688599109
+lng_min = 150.96038818359
+lat_max = -33.652923027488
+lng_max = 151.44172668457
+
+bounding_box =
+  "(#{lat_min},#{lng_min},#{lat_max},#{lng_max})"
 data = 'node["tourism"="camp_site"]' +
-  bounding_box +
-  ';out;way["tourism"="camp_site"]' +
-  bounding_box +
-  ';(._;>;);out;'
+       bounding_box +
+       ';out;way["tourism"="camp_site"]' +
+       bounding_box +
+       ';(._;>;);out;'
 page = agent.get(
   'https://overpass-api.de/api/interpreter?data=' + CGI.escape(data)
 )
