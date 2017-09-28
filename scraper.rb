@@ -21,7 +21,7 @@ data = 'node["tourism"="camp_site"]' +
        bounding_box +
        ';out;way["tourism"="camp_site"]' +
        bounding_box +
-       ';(._;>;);out;'
+       ';(._;>;);out center;'
 page = agent.get(
   'https://overpass-api.de/api/interpreter?data=' + CGI.escape(data)
 )
