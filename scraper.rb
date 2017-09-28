@@ -15,10 +15,10 @@ end
 # from OpenStreetMap
 
 # Defines the bounding box of the search
-lat_min = -34.011688599109
-lng_min = 150.96038818359
-lat_max = -33.652923027488
-lng_max = 151.44172668457
+lat_min = -54.833766
+lng_min = 110.951034
+lat_max = -9.187026
+lng_max = 159.287222
 
 bounding_box =
   "(#{lat_min},#{lng_min},#{lat_max},#{lng_max})"
