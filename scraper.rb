@@ -4,7 +4,11 @@
 require 'scraperwiki'
 require 'mechanize'
 
-agent = Mechanize.new
+def overpass_query(query)
+  Mechanize.new.get(
+    'https://overpass-api.de/api/interpreter?data=' + CGI.escape(query)
+  ).body
+end
 
 # Example overpass API query that gets campsites within a part of Sydney
 # from OpenStreetMap
@@ -22,11 +26,7 @@ data = 'node["tourism"="camp_site"]' +
        ';out;way["tourism"="camp_site"]' +
        bounding_box +
        ';(._;>;);out center;'
-page = agent.get(
-  'https://overpass-api.de/api/interpreter?data=' + CGI.escape(data)
-)
-
-puts page.body
+puts overpass_query(data)
 
 # # Find somehing on the page using css selectors
 # p page.at('div.content')
