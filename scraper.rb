@@ -53,5 +53,6 @@ doc.search('way').each do |way|
     value = tag['v']
     record[key] = value
   end
+  p record
   ScraperWiki.save_sqlite(['osm_way_id'], record)
 end
