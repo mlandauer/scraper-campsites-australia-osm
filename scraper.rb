@@ -8,7 +8,11 @@ agent = Mechanize.new
 
 # Example overpass API query that gets campsites within a part of Sydney
 # from OpenStreetMap
-page = agent.get('https://overpass-api.de/api/interpreter?data=node%5B%22tourism%22%3D%22camp%5Fsite%22%5D%28%2D34%2E011688599109%2C150%2E96038818359%2C%2D33%2E652923027488%2C151%2E44172668457%29%3Bout%3Bway%5B%22tourism%22%3D%22camp%5Fsite%22%5D%28%2D34%2E011688599109%2C150%2E96038818359%2C%2D33%2E652923027488%2C151%2E44172668457%29%3B%28%2E%5F%3B%3E%3B%29%3Bout%3B')
+
+data = 'node["tourism"="camp_site"](-34.011688599109,150.96038818359,-33.652923027488,151.44172668457);out;way["tourism"="camp_site"](-34.011688599109,150.96038818359,-33.652923027488,151.44172668457);(._;>;);out;'
+page = agent.get(
+  'https://overpass-api.de/api/interpreter?data=' + CGI.escape(data)
+)
 
 puts page.body
 
